@@ -2,14 +2,16 @@ module RegisterBank(
 		input write, clk,
 		input [4:0] a,b,c,
 		input [63:0] dataC,
-		output reg [63:0] dataA, dataB 
+		output [63:0] dataA, dataB 
 	);
-	assing	dataA = R[a];
-	assing	dataB = R[b];
 
 	reg [63:0] R[31:0];
+	assign	dataA = R[a];
+	assign	dataB = R[b];
+
 	
-	always @(posedge clk,write)
+	
+	always @(posedge clk)
 	begin			
 
 			if (write == 1)
