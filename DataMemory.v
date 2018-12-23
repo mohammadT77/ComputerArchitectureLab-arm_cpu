@@ -13,8 +13,7 @@ module DataMemory(input clk,
 		if(read)
 		begin
 			readData = M[addr1][addr2];
-		end
-		
+		end		
 		if(write)
 		begin
 			M[addr1][addr2] = writeData;
