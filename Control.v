@@ -1,13 +1,12 @@
-module Control(input [31:0] instruction,
+module Control(input [10:0] opcode,
 	output reg Reg2Loc,Branch,MemRead,MemWrite,MemtoReg,RegWrite,ALUSrc,
 	output reg [1:0] ALUOp
 );
-	wire [10:0] opcode = instruction[31:11];
-	always @(instruction)
+	
+	always @(*)
 	begin
-		$display("%s",opcode[10:9]);
-		case (opcode[10:9])
-		2'b1x: begin // R-Type
+		case (opcode[10:8])
+		3'b001: begin // R-Type
 				$display("R-Type");
 				Reg2Loc = 0;
 				Branch = 0;
@@ -18,7 +17,7 @@ module Control(input [31:0] instruction,
 				ALUSrc = 0;
 				ALUOp = 2'b10;
 			end
-		2'b11: begin // D-Type (Unscaled offset)
+		3'b010: begin // D-Type (Unscaled offset)
 				$display("D-Type");
 				Reg2Loc = 1;
 				Branch = 0;
@@ -39,9 +38,9 @@ module Control(input [31:0] instruction,
 					RegWrite = 1;
 				end
 			end	
-		2'b01: begin // CB-Type	
+		3'b100: begin // CB-Type	
 			$display("CB-Type");
-			if(opcode[8:0]==9'b010101xxx) //CBZ instruction
+			if(opcode[7:3]==5'b0) //CBZ instruction
 			begin
 				$display("/CBZ");
 				Reg2Loc = 1;
