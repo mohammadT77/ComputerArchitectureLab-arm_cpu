@@ -5,8 +5,8 @@ module Control(input [10:0] opcode,
 	
 	always @(*)
 	begin
-		case (opcode[10:8])
-		3'b001: begin // R-Type
+		case (opcode)
+		11'b1x_x01_01x_000: begin // R-Type
 				$display("R-Type");
 				Reg2Loc = 0;
 				Branch = 0;
@@ -17,7 +17,7 @@ module Control(input [10:0] opcode,
 				ALUSrc = 0;
 				ALUOp = 2'b10;
 			end
-		3'b010: begin // D-Type (Unscaled offset)
+		11'b11_111_000_xxx: begin // D-Type (Unscaled offset)
 				$display("D-Type");
 				Reg2Loc = 1;
 				Branch = 0;
@@ -38,11 +38,8 @@ module Control(input [10:0] opcode,
 					RegWrite = 1;
 				end
 			end	
-		3'b100: begin // CB-Type	
-			$display("CB-Type");
-			if(opcode[7:3]==5'b0) //CBZ instruction
-			begin
-				$display("/CBZ");
+		11'b10_110_100_xxx: begin // CB-Type	//CBZ
+				$display("CB-Type/CBZ");
 				Reg2Loc = 1;
 				Branch = 1;
 				MemRead = 0;
@@ -51,7 +48,6 @@ module Control(input [10:0] opcode,
 				RegWrite = 0;
 				ALUSrc = 0;
 				ALUOp = 2'b01;
-			end
 		end
 		
 	endcase
