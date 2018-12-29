@@ -9,6 +9,14 @@ module RegisterBank(
 	assign	dataA = R[a];
 	assign	dataB = R[b];
 
+	integer i;
+	initial begin
+		R[31] = 0;
+		for (i=0;i<31;i = i +1 ) begin
+			R[i] = i;
+		end
+	end
+
 	
 	
 	always @(posedge clk)
