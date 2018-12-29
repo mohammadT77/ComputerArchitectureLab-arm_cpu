@@ -1,4 +1,4 @@
-module DataMemory(input clk,
+module DataMemory#(parameter d=0)(input clk,
 	input [63:0] address,
 	input [63:0] writeData,
 	input read,write,
@@ -12,11 +12,11 @@ module DataMemory(input clk,
 		readData = 0;
 		if(read)
 		begin
-			readData = M[addr1][addr2];
+			#d readData = M[addr1][addr2];
 		end		
 		if(write)
 		begin
-			M[addr1][addr2] = writeData;
+			#d M[addr1][addr2] = writeData;
 		end
 	end
 endmodule

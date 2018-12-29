@@ -36,16 +36,16 @@ module CPU;
 	os os0(clk);
 	PC PC0(clk,pcReset,pcWrite,oldPC,pc);
 	InstructionMemory insMem0(pc,ins);
-	Control control0(opcode,C_Reg2Loc,C_Branch,C_MemRead,C_MemWrite,C_MemtoReg,C_RegWrite,C_ALUSrc,C_ALUOp);
+	Control#(.d(20)) control0(opcode,C_Reg2Loc,C_Branch,C_MemRead,C_MemWrite,C_MemtoReg,C_RegWrite,C_ALUSrc,C_ALUOp);
 	ALUControl aluControl0(ins,C_ALUOp,ALUctrl);
 	SignExtend32to64 signExtend0(ins,extendedImd);
 	Shift shifter0(extendedImd,5'd2, 1'b0, shiftedImd);
-	Adder64 AdderPC(pc,64'd4,pcWire0,cpc);
+	Adder64#(.d(10)) AdderPC(pc,64'd4,pcWire0,cpc);
 	Adder64 AdderBranch(pc,shiftedImd,pcWire1,cbranch);
 	
 
 	MUX2to1 muxPC(pcWire0,pcWire1,C_Branch&ALU_Z,oldPC);
-	MUX2to1 muxIns(ins[20:16],regwrite,C_Reg2Loc,reg2in);
+	MUX2to1#(.n(5)) muxIns(ins[20:16],regwrite,C_Reg2Loc,reg2in);
 	RegisterBank RegisterBank0(C_RegWrite,clk,reg1in,reg2in,regwrite,dataC,dataA,dataB);
 	MUX2to1 muxALU(dataB,extendedImd,C_ALUSrc,aluDataB);
 	ALU ALU0(dataA,aluDataB,ALUctrl,ALURes,ALU_Z,C);
