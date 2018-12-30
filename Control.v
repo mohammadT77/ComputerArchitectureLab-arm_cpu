@@ -5,6 +5,18 @@ module Control#(parameter d = 0)(input [10:0] opcode,
 	
 	always @(opcode)
 	#d begin
+		if (opcode==0) begin //NOP
+			$display("NOP");
+		  	Reg2Loc <= 0;
+		  	Branch <= 0;
+		  	MemRead <= 0;
+		  	MemWrite <= 0;
+		  	MemtoReg <= 0;
+		  	RegWrite <= 0;
+		  	ALUSrc <= 0;
+		  	ALUOp <= 0;
+		end
+
 		if(opcode[10]==1&&opcode[7:4]==4'b0101&&opcode[2:0]==3'b000) begin // R-Type
 			$display("R-Type");
 		  	Reg2Loc <= 0;
