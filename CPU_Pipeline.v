@@ -4,7 +4,7 @@ module CPU_pipline;
 	wire [63:0] pcWire0,pcWire1;
 	wire [63:0] pc,oldPC;
 	wire [31:0] ins;
-	wire [10:0] opcode = ins[31:21];
+	wire [10:0] opcode;
 	wire C_Reg2Loc
 		,C_RegWrite
 		,C_Branch
@@ -55,10 +55,11 @@ module CPU_pipline;
 	assign IFID_ins = IFID_out[31:0];
 	assign IFID_pc = IFID_out[95:32];
 
+	assign opcode = IFID_ins[31:21];
 	assign reg1in = IFID_ins[9:5];
 
 	PC#(.n(IDEX_n)) IDEX(clk,IDEX_reset,~IDEX_stall,
-		{ins
+		{IFID_ins
 		,C_RegWrite
 		,C_Branch
 		,C_MemRead
@@ -66,7 +67,7 @@ module CPU_pipline;
 		,C_MemtoReg
 		,C_ALUSrc
 		,C_ALUOp
-		,pc
+		,IFID_pc
 		,dataA,dataB,extendedImd}
 		,IDEX_out);
 
